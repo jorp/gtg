@@ -121,7 +121,7 @@ class TestSavedSearch(TestCase):
         child_3 = store.new('Child search 3', '@another_tag', child_2.id)
 
         self.assertEqual(len(store.lookup), 5)
-        store.remove_child(child_2.id, child_3.id)
+        store.remove(child_3.id)
 
         self.assertEqual(len(store.lookup), 4)
         self.assertEqual(len(child_2.children), 0)
