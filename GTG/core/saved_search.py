@@ -31,7 +31,7 @@ log = logging.getLogger(__name__)
 class SavedSearch:
     """A saved search."""
 
-    sid: uuid4
+    id: uuid4
     name: str
     query: str
     icon: str = None
@@ -41,7 +41,7 @@ class SavedSearch:
         """String representation."""
 
         return (f'Saved Search "{self.name}" '
-                f'with query "{self.query}" and id "{self.sid}"')
+                f'with query "{self.query}" and id "{self.id}"')
 
 
 class SavedSearchStore:
@@ -131,8 +131,8 @@ class SavedSearchStore:
     def new(self, name: str, query: str, parent: uuid4 = None) -> SavedSearch:
         """Create a new saved search and add it to the store."""
 
-        sid = uuid4()
-        search = SavedSearch(sid=sid, name=name, query=query)
+        search_id = uuid4()
+        search = SavedSearch(id=search_id, name=name, query=query)
 
         if parent:
             self.add_child(parent, search)
