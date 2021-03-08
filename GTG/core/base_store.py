@@ -74,7 +74,7 @@ class BaseStore(ABC):
                 raise
 
         else:
-            self.data.append(search)
+            self.data.append(item)
 
         self.lookup[item.id] = item
         log.debug('Added %s', item)
