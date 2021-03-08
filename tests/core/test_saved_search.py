@@ -144,7 +144,7 @@ class TestSavedSearch(TestCase):
         self.assertEqual(store.count(), 3)
         self.assertEqual(store.count(root_only=True), 2)
 
-        store.remove(child_2.sid)
+        store.remove(child_2.id)
         self.assertEqual(store.count(), 2)
         self.assertEqual(store.count(root_only=True), 2)
 
