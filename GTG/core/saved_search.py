@@ -74,11 +74,11 @@ class SavedSearchStore:
             if parent:
                 continue
 
-            sid = element.get('id')
+            search_id = element.get('id')
             name = element.get('name')
             query = element.get('query')
 
-            search = SavedSearch(sid=sid, name=name, query=query)
+            search = SavedSearch(id=search_id, name=name, query=query)
 
             self.add(search)
             log.debug('Added %s', search)
@@ -110,7 +110,7 @@ class SavedSearchStore:
 
         for search in self.lookup.values():
             element = SubElement(root, self.XML_TAG)
-            element.set('id', str(search.sid))
+            element.set('id', str(search.id))
             element.set('name', search.name)
             element.set('query', search.query)
 
