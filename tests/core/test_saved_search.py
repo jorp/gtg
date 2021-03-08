@@ -33,15 +33,15 @@ class TestSavedSearch(TestCase):
         self.assertEqual(len(store.data), 1)
 
         # Make sure it's the same one we received
-        self.assertEqual(store.lookup[search.sid], search)
+        self.assertEqual(store.lookup[search.id], search)
 
         # Make sure it's an instance of SavedSearch
         self.assertIsInstance(search, SavedSearch)
 
 
     def test_add_simple(self):
-        sid = uuid4()
-        search = SavedSearch(sid=sid, name='Test Search', query='@tag1')
+        search_id = uuid4()
+        search = SavedSearch(id=search_id, name='Test Search', query='@tag1')
         store = SavedSearchStore()
 
         self.assertEqual(len(store.data), 0)
@@ -61,7 +61,7 @@ class TestSavedSearch(TestCase):
         search = store.new('Some @tag', 'Looking for some tag')
 
         self.assertEqual(len(store.data), 1)
-        store.remove(search.sid)
+        store.remove(search.id)
         self.assertEqual(len(store.data), 0)
 
         with self.assertRaises(KeyError):
@@ -93,18 +93,18 @@ class TestSavedSearch(TestCase):
 
         store = SavedSearchStore()
 
-        search_1 = SavedSearch(sid=uuid4(), name='Test 1', query='@tag1')
-        search_2 = SavedSearch(sid=uuid4(), name='Test 2', query='@tag2')
-        search_3 = SavedSearch(sid=uuid4(), name='Test 3', query='@tag3')
-        search_4 = SavedSearch(sid=uuid4(), name='Test 4', query='@tag4')
-        search_5 = SavedSearch(sid=uuid4(), name='Test 5', query='@tag5')
+        search_1 = SavedSearch(id=uuid4(), name='Test 1', query='@tag1')
+        search_2 = SavedSearch(id=uuid4(), name='Test 2', query='@tag2')
+        search_3 = SavedSearch(id=uuid4(), name='Test 3', query='@tag3')
+        search_4 = SavedSearch(id=uuid4(), name='Test 4', query='@tag4')
+        search_5 = SavedSearch(id=uuid4(), name='Test 5', query='@tag5')
 
 
         store.add(search_1)
         store.add(search_2)
-        store.add(search_3, search_1.sid)
-        store.add(search_4, search_3.sid)
-        store.add(search_5, search_3.sid)
+        store.add(search_3, search_1.id)
+        store.add(search_4, search_3.id)
+        store.add(search_5, search_3.id)
 
         store.print_tree()
 
@@ -115,19 +115,19 @@ class TestSavedSearch(TestCase):
         root_1 = store.new('Root search', '@tag')
         root_2 = store.new('Root search 2', '@tag2')
 
-        child_1 = store.new('Child search 1', '@another_tag', root_1.sid)
-        child_2 = store.new('Child search 2', '@another_tag', root_2.sid)
+        child_1 = store.new('Child search 1', '@another_tag', root_1.id)
+        child_2 = store.new('Child search 2', '@another_tag', root_2.id)
 
-        child_3 = store.new('Child search 3', '@another_tag', child_2.sid)
+        child_3 = store.new('Child search 3', '@another_tag', child_2.id)
 
         self.assertEqual(len(store.lookup), 5)
-        store.remove_child(child_2.sid, child_3.sid)
+        store.remove_child(child_2.id, child_3.id)
 
         self.assertEqual(len(store.lookup), 4)
         self.assertEqual(len(child_2.children), 0)
 
-        store.remove(root_1.sid)
-        store.remove(root_2.sid)
+        store.remove(root_1.id)
+        store.remove(root_2.id)
 
         self.assertEqual(len(store.lookup), 0)
         self.assertEqual(len(store.data), 0)
@@ -139,7 +139,7 @@ class TestSavedSearch(TestCase):
 
         root_1 = store.new('Root search', '@tag')
         root_2 = store.new('Root search 2', '@tag2')
-        child_2 = store.new('Child search 2', '@another_tag', root_2.sid)
+        child_2 = store.new('Child search 2', '@another_tag', root_2.id)
 
         self.assertEqual(store.count(), 3)
         self.assertEqual(store.count(root_only=True), 2)
