@@ -75,10 +75,10 @@ class TestSavedSearch(TestCase):
         root_1 = store.new('Root search', '@tag')
         root_2 = store.new('Root search 2', '@tag2')
 
-        child_1 = store.new('Child search 1', '@another_tag', root_1.sid)
-        child_2 = store.new('Child search 2', '@another_tag', root_2.sid)
+        child_1 = store.new('Child search 1', '@another_tag', root_1.id)
+        child_2 = store.new('Child search 2', '@another_tag', root_2.id)
 
-        child_3 = store.new('Child search 3', '@another_tag', child_2.sid)
+        child_3 = store.new('Child search 3', '@another_tag', child_2.id)
 
         self.assertEqual(len(store.lookup), 5)
         self.assertEqual(len(store.data), 2)
