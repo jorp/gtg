@@ -138,7 +138,7 @@ class SavedSearchStore:
             self.add_child(parent, search)
         else:
             self.data.append(search)
-            self.lookup[sid] = search
+            self.lookup[search_id] = search
 
         return search
 
