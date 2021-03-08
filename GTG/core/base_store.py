@@ -44,8 +44,8 @@ class BaseStore(ABC):
     # BASIC MANIPULATION
     # --------------------------------------------------------------------------
 
-    @abstractmethod()
-    def new(self, ...) -> Any:
+    @abstractmethod
+    def new(self) -> Any:
         ...
 
 
@@ -65,7 +65,8 @@ class BaseStore(ABC):
             raise KeyError
 
         if parent_id:
-            self.lookup[parent_id].children.append(item)
+            try:
+                self.lookup[parent_id].children.append(item)
 
             except KeyError:
                 log.warn(('Failed to add item with id %s to parent %s, '
@@ -135,12 +136,12 @@ class BaseStore(ABC):
     # SERIALIZING
     # --------------------------------------------------------------------------
 
-    @abstractmethod()
-    def from_xml(self, xml: Element) -> Self:
+    @abstractmethod
+    def from_xml(self, xml: Element) -> Any:
         ...
 
 
-    @abstractmethod()
+    @abstractmethod
     def to_xml(self) -> Element:
         ...
 
