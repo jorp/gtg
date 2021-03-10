@@ -26,6 +26,7 @@ import random
 from lxml.etree import Element, SubElement
 from typing import List
 
+from GTG.core.base_store import BaseStore
 
 log = logging.getLogger(__name__)
 
@@ -47,7 +48,7 @@ class Tag2:
         return (f'Tag "{self.name}" with id "{self.tid}"')
 
 
-class TagStore:
+class TagStore(BaseStore):
     """A list of tags."""
 
     #: Tag to look for in XML
@@ -55,9 +56,8 @@ class TagStore:
 
 
     def __init__(self) -> None:
-        self.lookup = {}
-        self.data = []
         self.used_colors = set()
+        super().__init__()
 
 
     def __str__(self) -> str:
@@ -81,43 +81,6 @@ class TagStore:
             tag = Tag2(tid=uuid4(), name=name)
 
             return tag
-
-
-    def count(self, root_only: bool = False) -> int:
-        """Count all the searches in the store."""
-
-        if root_only:
-            return len(self.data)
-        else:
-            return len(self.lookup)
-
-
-    def print_list(self) -> None:
-        """Print the entre list of searches."""
-
-        print(self)
-
-        for tag in self.lookup.values():
-            print((f'- "@{tag.name}" with id "{tag.tid}"'))
-
-
-    def print_tree(self) -> None:
-        """Print the all the searches as a tree."""
-
-        def recursive_print(tree: List, indent: int) -> None:
-            """Inner print function. """
-
-            tab =  '   ' * indent if indent > 0 else ''
-
-            for node in tree:
-                print(f'{tab} └ {node}')
-
-                if node.children:
-                    recursive_print(node.children, indent + 1)
-
-        print(self)
-        recursive_print(self.data, 0)
-
 
     def generate_color(self) -> Color:
         """Generate a random color that isn't already used."""
