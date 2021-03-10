@@ -83,6 +83,8 @@ class BaseStore(ABC):
     def remove(self, item_id: uuid4) -> None:
         """Remove an existing search from the store."""
 
+        #TODO: RECURSIVE DELETE!
+
         try:
             for item in self.lookup.values():
                 if item.id == item_id:

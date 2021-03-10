@@ -216,3 +216,16 @@ class TestSavedSearch(TestCase):
         xml_root = store.to_xml()
 
         self.assertEqual(len(xml_root), 2)
+
+
+    def test_parent(self):
+
+        store = SavedSearchStore()
+        search1 = store.new('Some @tag', 'Looking for some tag')
+        search2 = store.new('Some @other @tag', 'Looking for more')
+
+
+
+    # TODO: DOCUMENT
+    # TODO: TEST RECURSIVE DELETE
+    # TODO: TEST PARENT AND UNPARENT
