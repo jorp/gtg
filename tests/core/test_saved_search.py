@@ -224,8 +224,41 @@ class TestSavedSearch(TestCase):
         search1 = store.new('Some @tag', 'Looking for some tag')
         search2 = store.new('Some @other @tag', 'Looking for more')
 
+        self.assertEqual(len(store.lookup), 2)
+        self.assertEqual(len(store.data), 2)
+
+        store.parent(search1.id, search2.id)
+
+        self.assertEqual(len(store.data), 1)
+        self.assertEqual(len(search2.children), 1)
+        self.assertEqual(len(store.lookup), 2)
+
+        search3 = store.new('Some @other @tag', 'Looking for more')
+        store.parent(search3.id, search1.id)
+
+        self.assertEqual(len(store.data), 1)
+        self.assertEqual(len(search1.children), 1)
+        self.assertEqual(len(search2.children), 1)
+        self.assertEqual(len(store.lookup), 3)
 
 
-    # TODO: DOCUMENT
-    # TODO: TEST RECURSIVE DELETE
-    # TODO: TEST PARENT AND UNPARENT
+    def test_unparent(self):
+
+        store = SavedSearchStore()
+        search1 = store.new('Some @tag', 'Looking for some tag')
+        search2 = store.new('Some @other @tag', 'Looking for more')
+
+        self.assertEqual(len(store.lookup), 2)
+        self.assertEqual(len(store.data), 2)
+
+        store.parent(search1.id, search2.id)
+
+        self.assertEqual(len(store.data), 1)
+        self.assertEqual(len(search2.children), 1)
+        self.assertEqual(len(store.lookup), 2)
+
+        store.unparent(search1.id, search2.id)
+
+        self.assertEqual(len(store.data), 2)
+        self.assertEqual(len(search2.children), 0)
+        self.assertEqual(len(store.lookup), 2)
