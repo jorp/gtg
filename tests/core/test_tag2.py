@@ -25,6 +25,25 @@ from lxml.etree import Element, SubElement, XML
 
 class TestTagStore(TestCase):
 
+
+    def test_new(self):
+        ...
+
+    def test_xml_load_simple(self):
+        ...
+
+    def test_xml_load_tree(self):
+        ...
+
+    def test_xml_load_bad(self):
+        ...
+
+    def test_xml_write_simple(self):
+        ...
+
+    def test_xml_write_tree(self):
+        ...
+
     def test_random_color(self):
         tag_store = TagStore()
 

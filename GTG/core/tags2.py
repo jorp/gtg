@@ -82,6 +82,65 @@ class TagStore(BaseStore):
 
             return tag
 
+    def from_xml(self, xml: Element) -> 'SavedSearchStore':
+        """Load searches from an LXML element."""
+
+        elements = list(xml.iter(self.XML_TAG))
+
+        # Do parent searches first
+        for element in elements.copy():
+            parent = element.get('parent')
+
+            if parent:
+                continue
+
+            search_id = element.get('id')
+            name = element.get('name')
+            query = element.get('query')
+
+            search = SavedSearch(id=search_id, name=name, query=query)
+
+            self.add(search)
+            log.debug('Added %s', search)
+            elements.remove(element)
+
+
+        # Now the remaining searches are children
+        for element in elements:
+            parent = element.get('parent')
+            search_id = element.get('id')
+            name = element.get('name')
+            query = element.get('query')
+
+            search = SavedSearch(id=search_id, name=name, query=query)
+            self.add(search, parent)
+            log.debug('Added %s as child of %s', search, parent)
+
+
+    def to_xml(self) -> Element:
+        """Save searches to an LXML element."""
+
+        root = Element('SavedSearches')
+
+        parent_map = {}
+
+        for search in self.data:
+            for child in search.children:
+                parent_map[child.id] = search.id
+
+        for search in self.lookup.values():
+            element = SubElement(root, self.XML_TAG)
+            element.set('id', str(search.id))
+            element.set('name', search.name)
+            element.set('query', search.query)
+
+            try:
+                element.set('parent', parent_map[search.id])
+            except KeyError:
+                pass
+
+        return root
+
     def generate_color(self) -> Color:
         """Generate a random color that isn't already used."""
 
