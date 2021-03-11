@@ -94,14 +94,15 @@ class TagStore(BaseStore):
             if parent:
                 continue
 
-            search_id = element.get('id')
+            tag_id = element.get('id')
             name = element.get('name')
-            query = element.get('query')
+            color = element.get('color')
+            icon = element.get('icon')
 
-            search = SavedSearch(id=search_id, name=name, query=query)
+            tag = Tag2(id=tag_id, name=name, color=color, icon=icon)
 
-            self.add(search)
-            log.debug('Added %s', search)
+            self.add(tag)
+            log.debug('Added %s', tag)
             elements.remove(element)
 
 
