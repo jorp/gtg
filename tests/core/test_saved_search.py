@@ -19,7 +19,7 @@
 from unittest import TestCase
 from uuid import uuid4
 
-from GTG.core.saved_search import SavedSearch, SavedSearchStore
+from GTG.core.saved_searches import SavedSearch, SavedSearchStore
 from lxml.etree import Element, SubElement, XML
 
 
